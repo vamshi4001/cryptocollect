@@ -11,6 +11,7 @@ angular.module("firstApp")
 		$scope.completeTotalINR = 0;
 		$scope.selected = "INR";
 		$scope.items = [];
+		$scope.selectedCoins = [];
 			
 		$scope.updateCost = function(){
 			$scope.completeTotalUSD = 0;
@@ -22,6 +23,15 @@ angular.module("firstApp")
 					$scope.completeTotalUSD = Math.round($scope.completeTotalUSD*100)/100
 					$scope.completeTotalINR = Math.round($scope.completeTotalINR*100)/100
 				}				
+			}
+		}
+		$scope.selectCoin = function(coin){		
+			coin.isSelected==="selected"?coin.isSelected="":coin.isSelected="selected"
+			if($scope.selectedCoins.indexOf(coin)==-1){
+				$scope.selectedCoins.push(coin);
+			}
+			else{
+				$scope.selectedCoins.splice($scope.selectedCoins.indexOf(coin),1);
 			}
 		}
 		$scope.update = function(selectedCurrency){

@@ -1,6 +1,6 @@
   <div class="container">
     <div class="row text-center">
-      <h2>Find how much you can buy for X amount of <span><select class="form-control input-xs" ng-options="item for item in items" ng-model="selected" ng-change="update(selected)"></select></span></h2>
+      <h2>Find how much you can buy for X amount of <span><select class="currency form-control input-xs" ng-options="item for item in items" ng-model="selected" ng-change="update(selected)"></select></span></h2>
     </div>
     <div class="row">
       <div>Total : {{completeTotalUSD | currency:"USD"}} : {{completeTotalINR | currency:selected}}</div>   
@@ -11,20 +11,40 @@
         </li>
       </ul>      
       <hr>
-      <ul class="list-group row" id="contact-list">
-          <li class="list-group-item col-xs-6 col-sm-4 col-md-3 col-lg-3" ng-repeat="coin in coinlist"  ng-if="prices[coin.Name]">
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                  <img src="{{BaseImageUrl}}{{coin.ImageUrl}}?width=200" alt="{{coin.FullName}}" class="img-responsive img-circle" />
-              </div>
-              <div class="col-xs-9 col-sm-9 col-lg-9 col-lg-9">
-                  <span class="name">{{coin.FullName}}</span><br/>
-                  <span class="usdprice">{{prices[coin.Name]["USD"] | currency:"USD"}}</span>
-                  <span class="inrprice">{{(prices[coin.Name]["USD"]*conversionFactor).toFixed(2) | currency:selected}}</span>
-                  <div><input type="text" name="" id="" ng-model="coin.quantity" ng-change="updateCost()" placeholder="Quantity" class="quantity form-control input-xs" /></div>
-              </div>
-              <div class="clearfix"></div>
-          </li>
-      </ul>         
+      <div class="row">
+        <div class="sidebar col-md-3">
+          <ul class="list-group row" id="contact-list">
+              <li class="list-group-item sidebar-items" ng-repeat="coin in coinlist"  ng-if="prices[coin.Name]" ng-class="coin.isSelected" ng-click="selectCoin(coin)">
+                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                      <img src="{{BaseImageUrl}}{{coin.ImageUrl}}?width=200" alt="{{coin.FullName}}" class="img-responsive img-circle" />
+                  </div>
+                  <div class="col-xs-9 col-sm-9 col-lg-9 col-lg-9">
+                      <span class="name">{{coin.FullName}}</span><br/>
+                      <span class="usdprice">{{prices[coin.Name]["USD"] | currency:"USD"}}</span>
+                      <span class="inrprice" ng-show="conversionFactor">{{(prices[coin.Name]["USD"]*conversionFactor).toFixed(2) | currency:selected}}</span>
+                      <!-- <div><input type="text" name="" id="" ng-model="coin.quantity" ng-change="updateCost()" placeholder="Quantity" class="quantity form-control input-xs" /></div> -->
+                  </div>
+                  <div class="clearfix"></div>
+              </li>
+          </ul> 
+        </div>    
+        <div class="main-content col-md-9">
+          <ul class="list-group row" id="contact-list-1">
+              <li class="list-group-item col-xs-6 col-sm-6 col-md-4 col-lg-4" ng-repeat="coin in selectedCoins"  ng-if="prices[coin.Name]" ng-click="selectCoin(coin)">
+                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                      <img src="{{BaseImageUrl}}{{coin.ImageUrl}}?width=200" alt="{{coin.FullName}}" class="img-responsive img-circle" />
+                  </div>
+                  <div class="col-xs-9 col-sm-9 col-lg-9 col-lg-9">
+                      <span class="name">{{coin.FullName}}</span><br/>
+                      <span class="usdprice">{{prices[coin.Name]["USD"] | currency:"USD"}}</span>
+                      <span class="inrprice" ng-show="conversionFactor">{{(prices[coin.Name]["USD"]*conversionFactor).toFixed(2) | currency:selected}}</span>
+                      <div><input type="text" name="" id="" ng-model="coin.quantity" ng-change="updateCost()" placeholder="Quantity" class="quantity form-control input-xs" /></div>
+                  </div>
+                  <div class="clearfix"></div>
+              </li>
+          </ul> 
+        </div> 
+      </div>   
     </div>        
     <span class="pull-right small">Developed by <a href="https://linkedin.com/in/vamshi4001">Vamshi</a> <br>Information from <a href="cryptocompare.com">cryptocompare.com</a></span>
   </div>

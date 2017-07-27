@@ -1,8 +1,8 @@
 angular.module("firstApp")
-	.config(function ($stateProvider, $urlRouterProvider) {
+	.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
         $stateProvider
           .state('home', {
-            url: '/home',
+            url: '/',
             templateUrl: 'views/home.html',
             controller: 'homeController'
           })
@@ -22,5 +22,9 @@ angular.module("firstApp")
             controller: 'contactController'
           })
           
-        $urlRouterProvider.otherwise('/home');   
+        $urlRouterProvider.otherwise('/');   
+        $locationProvider.html5Mode({
+          enabled: true,
+          requireBase: false
+        });
     })

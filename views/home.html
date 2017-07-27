@@ -1,8 +1,16 @@
   <div class="container">
     <div class="row text-center">
-      <h2>Find how much you can buy for Rs.X</h2>
+      <h2>Find how much you can buy for X amount of <span><select class="form-control input-xs" ng-options="item for item in items" ng-model="selected" ng-change="update(selected)"></select></span></h2>
     </div>
     <div class="row">
+      <div>Total : {{completeTotalUSD | currency:"USD"}} : {{completeTotalINR | currency:selected}}</div>   
+      <ul class="summary" ng-if="completeTotalUSD>0">
+        <li class="summarylist" ng-repeat="coin in coinlist" ng-if="coin.quantity>0">
+          <span class="qty">{{coin.quantity}}</span>
+          <span class="currency">{{coin.FullName}}</span>
+        </li>
+      </ul>      
+      <hr>
       <ul class="list-group row" id="contact-list">
           <li class="list-group-item col-xs-6 col-sm-4 col-md-3 col-lg-3" ng-repeat="coin in coinlist"  ng-if="prices[coin.Name]">
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -11,20 +19,12 @@
               <div class="col-xs-9 col-sm-9 col-lg-9 col-lg-9">
                   <span class="name">{{coin.FullName}}</span><br/>
                   <span class="usdprice">{{prices[coin.Name]["USD"] | currency:"USD"}}</span>
-                  <span class="inrprice">{{(prices[coin.Name]["USD"]*conversion["INR"]).toFixed(2) | currency:"INR"}}</span>
+                  <span class="inrprice">{{(prices[coin.Name]["USD"]*conversionFactor).toFixed(2) | currency:selected}}</span>
                   <div><input type="text" name="" id="" ng-model="coin.quantity" ng-change="updateCost()" placeholder="Quantity" class="quantity form-control input-xs" /></div>
               </div>
               <div class="clearfix"></div>
           </li>
-      </ul>   
-
-      <div>Total : {{completeTotalUSD | currency:"USD"}} : Rs.{{completeTotalINR | currency:"INR"}}</div>   
-      <ul class="summary" ng-if="completeTotalUSD>0">
-        <li class="summarylist" ng-repeat="coin in coinlist" ng-if="coin.quantity>0">
-          <span class="qty">{{coin.quantity}}</span>
-          <span class="currency">{{coin.FullName}}</span>
-        </li>
-      </ul>      
+      </ul>         
     </div>        
     <span class="pull-right small">Developed by <a href="https://linkedin.com/in/vamshi4001">Vamshi</a> <br>Information from <a href="cryptocompare.com">cryptocompare.com</a></span>
   </div>

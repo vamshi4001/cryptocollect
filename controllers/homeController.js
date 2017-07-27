@@ -8,7 +8,9 @@ angular.module("firstApp")
 		$scope.url = "./coinlist.json";
 		$scope.coinlist = [];
 		$scope.completeTotalUSD = 0;
-		$scope.completeTotalINR = 0
+		$scope.completeTotalINR = 0;
+		$scope.selected = "INR";
+		$scope.items = [];
 			
 		$scope.updateCost = function(){
 			$scope.completeTotalUSD = 0;
@@ -16,11 +18,14 @@ angular.module("firstApp")
 			for(i in $scope.coinlist){
 				if($scope.coinlist[i] && $scope.prices[$scope.coinlist[i].Name]){
 					$scope.completeTotalUSD += Math.round(parseFloat($scope.coinlist[i].quantity?$scope.coinlist[i].quantity:0)*$scope.prices[$scope.coinlist[i].Name]["USD"]*100)/100;
-					$scope.completeTotalINR += Math.round(parseFloat($scope.coinlist[i].quantity?$scope.coinlist[i].quantity:0)*$scope.prices[$scope.coinlist[i].Name]["USD"]*$scope.conversion["INR"]*100)/100;
+					$scope.completeTotalINR += Math.round(parseFloat($scope.coinlist[i].quantity?$scope.coinlist[i].quantity:0)*$scope.prices[$scope.coinlist[i].Name]["USD"]*$scope.conversionFactor*100)/100;
 					$scope.completeTotalUSD = Math.round($scope.completeTotalUSD*100)/100
 					$scope.completeTotalINR = Math.round($scope.completeTotalINR*100)/100
 				}				
 			}
+		}
+		$scope.update = function(selectedCurrency){
+			$scope.conversionFactor = $scope.conversion[selectedCurrency];
 		}
 		$http.get($scope.url).then(function(response){
 			if(response.data.Response=="Success"){
@@ -42,6 +47,7 @@ angular.module("firstApp")
 				$scope.prices = result.data;
 				$http.get("http://api.fixer.io/latest?base=USD").then(function(res){
 					$scope.conversion = res.data.rates;
+					$scope.items = Object.keys($scope.conversion);
 				})
 			})			
 		})		
